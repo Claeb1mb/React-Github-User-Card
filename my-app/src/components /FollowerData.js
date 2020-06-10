@@ -9,27 +9,31 @@ class FollowerData extends React.Component {
   }
 
   componentDidMount() {
-    fetch("https://api.github.com/users/Claeb1mb/followers")
-      .then((res) => res.json())
-      .then((data) => this.setState({ followersData: data }))
-      .catch((errors) => console.log(errors));
+    console.log("CDM Running");
+    axios
+      .get("https://api.github.com/users/Claeb1mb/followers")
+      .then((res) => {
+        console.log(res);
+        this.setState({ FollowerData: res.data });
+      })
+      .catch((err) => console.log(err));
   }
 
   render() {
-    console.log("FollowersData render");
+    console.log("FollowerData Render");
     console.log(this.state);
     return (
       <div>
         <h1>Followers</h1>
-        <div className="Follow-Card">
-          {this.state.FollowersData.map((following) => {
-            return (
-              <a href={following.html_url}>
-                <img src={following.avatar_url} alt="follow-pic" />
-                <p>{following.login}</p>
-              </a>
-            );
-          })}
+        <div className="follow-card">
+          {this.state.FollowersData.map((data) => (
+            <img
+              width="200"
+              src={data.avatar_url}
+              key={data.avatar_url}
+              alt=""
+            />
+          ))}
         </div>
       </div>
     );
