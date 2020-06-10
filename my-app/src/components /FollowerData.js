@@ -1,40 +1,38 @@
 import React from "react";
 import axios from "axios";
+import UserData from "./UserData";
 class FollowerData extends React.Component {
   constructor() {
     super();
     this.state = {
       FollowersData: [],
+      followersProfile: [],
     };
   }
-
   componentDidMount() {
-    console.log("CDM Running");
-    axios
-      .get("https://api.github.com/users/Claeb1mb/followers")
-      .then((res) => {
-        console.log(res);
-        this.setState({ FollowerData: res.data });
-      })
-      .catch((err) => console.log(err));
+    axios.get("https://api.github.com/users/Claeb1mb/followers").then((res) => {
+      console.log("followers load", res.data);
+      this.setState({ FollowerData: res.data });
+    });
+
+    this.state.followersProfile.map((follower) => {
+      axios
+        .get(`https://api.github.com/users/${follower.login}`)
+        .then((res) => {
+          console.log("Should be follower Profiles", res);
+          this.setState({
+            followersProfile: [...this.state.followersProfile, res],
+          });
+        });
+    });
   }
 
   render() {
-    console.log("FollowerData Render");
-    console.log(this.state);
     return (
-      <div>
-        <h1>Followers</h1>
-        <div className="follow-card">
-          {this.state.FollowersData.map((data) => (
-            <img
-              width="200"
-              src={data.avatar_url}
-              key={data.avatar_url}
-              alt=""
-            />
-          ))}
-        </div>
+      <div className="follow-card">
+        {this.state.followersProfile.map((profile) => {
+          return <UserData user={profile} />;
+        })}
       </div>
     );
   }
