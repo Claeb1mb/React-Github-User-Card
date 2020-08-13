@@ -1,5 +1,6 @@
 import React from "react";
 import User from "./Components /User ";
+import Follower from "./Components /Follower";
 import "./App.css";
 //What Do I Want To Display in the App Ie Avatar url , Followers, Following,Name ??
 
@@ -11,6 +12,7 @@ class App extends React.Component {
       <div>
         <h1>Lambda Github</h1>
         <User />
+        <Follower />
       </div>
     );
   }
